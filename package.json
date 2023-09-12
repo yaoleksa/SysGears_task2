@@ -1,0 +1,16 @@
+{
+  "name": "sysgears_task2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app.js"
+  },
+  "devDependencies": {
+    "http":"^0.0.1-security"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
