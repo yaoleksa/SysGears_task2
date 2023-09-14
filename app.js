@@ -14,15 +14,17 @@ const comparator = (objArr, key) => {
 };
 
 const filter = (objArr, cond) => {
-    const result = [];
+    let result = objArr;
     for(let i in cond) {
         if(i != 'sortBy') {
             for(let j in cond[i]) {
+                // j == 0, 1... , cond[i][j] = {"disabled": true}...
                 for(let h in cond[i][j]) {
+                    // h == name, email ...
                     if(i == 'exclude') {
-                        result.push(...objArr.filter(e => e[h] != cond[i][j][h]));
+                        result = result.filter(e => e[h] != cond[i][j][h]);
                     } else if(i == 'include') {
-                        result.push(...objArr.filter(e => e[h] == cond[i][j][h]));
+                        result = result.filter(e => e[h] == cond[i][j][h]);
                     }
                 }
             }
@@ -35,7 +37,7 @@ http.createServer((req, res) => {
     if(req.method == 'POST') {
         req.on('data', data => {
             const parsedResponse = decodeURIComponent(Buffer.from(data).toString('utf-8').split('=')[1])
-            .replace(/\+/g, '');
+            .replace(/\+/g, '').replace(/\”/g, '"');
             const jsonResponse = JSON.parse(parsedResponse);
             const userLst = jsonResponse.data;
             const conds = jsonResponse.condition;
