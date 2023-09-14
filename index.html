@@ -1,12 +1,25 @@
 <!doctype html>
-<html dir="ltr" lang="uk">
+<html dir="ltr" lang="uk" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON tackle</title>
+    <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/JSON_vector_logo.svg/1200px-JSON_vector_logo.svg.png">
+    <meta property="og:title" content="JSON handler">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jsonhandler.onrender.com/">
+    <meta property="og:image" content="https://prepbytes-misc-images.s3.ap-south-1.amazonaws.com/assets/1676293425992-What%20is%20json%20stack.jpeg">
+    <meta property="og:description" content="Convert filter and sort JSON raw input according to the input condition">
+    <style>
+      #input {
+        width:78%;
+        height: 60%;
+      }
+    </style>
   </head>
   <body>
     <form method="post" style="height:40rem">
-        <input type="text" placeholder="Raw JSON input" name="rawData" style="width:78%;height:60%">
+        <input type="text" placeholder="Raw JSON input" name="rawData" id="input">
         <input type="submit" value="SUBMIT">
     </form>
   </body>
