@@ -24,19 +24,23 @@ const filter = (objArr, cond) => {
                 condKeys = Object.keys(cond[i][j]);
                 condKeys.forEach(item => {
                     if(i == 'exclude') {
-                        fullCond += `e.${item} != "${cond[i][j][item]}" && `;
+                        fullCond += `e.${item} != "${cond[i][j][item]}"&&`;
                     } else if(i == 'include') {
-                        fullCond += `e.${item} == "${cond[i][j][item]}" && `;
+                        fullCond += `e.${item} == "${cond[i][j][item]}"&&`;
                     }
                 });
-                fullCond = fullCond.replace(/\s&&\s$/, '');
+                fullCond = fullCond.replace(/&&$/, '');
                 if(condKeys.length > 1) {
                     const toReturn = [];
                     result.forEach(e => {
-                        console.log(`${fullCond} ${JSON.stringify(e)} ${eval(fullCond)}`);
-                        if(eval(fullCond)) {
+                        let bool = true;
+                        fullCond.split('&&').forEach(c => {
+                            bool = eval(c);
+                        });
+                        if(bool) {
                             toReturn.push(e);
                         }
+                        console.log(`${fullCond} ${JSON.stringify(e)}  ${bool}`);
                     });
                     return toReturn;
                 }
