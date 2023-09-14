@@ -26,8 +26,6 @@ http.createServer((req, res) => {
                 conds.sortBy.forEach(e => {
                     sorted = comparator(sorted, e);
                 });
-            } else {
-                sorted.push(...userLst);
             }
             res.write(JSON.stringify(sorted), err => {
                 if(err) {
