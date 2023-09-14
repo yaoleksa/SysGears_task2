@@ -21,9 +21,11 @@ http.createServer((req, res) => {
             const jsonResponse = JSON.parse(parsedResponse);
             const userLst = jsonResponse.data;
             const conds = jsonResponse.condition;
-            const sorted = [];
+            let sorted = userLst;
             if(conds.sortBy) {
-                sorted.push(...comparator(userLst, conds.sortBy[0]));
+                conds.sortBy.forEach(e => {
+                    sorted = comparator(sorted, e);
+                });
             } else {
                 sorted.push(...userLst);
             }
