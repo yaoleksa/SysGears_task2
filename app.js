@@ -36,8 +36,27 @@ const filter = (objArr, cond) => {
 http.createServer((req, res) => {
     if(req.method == 'POST') {
         req.on('data', data => {
-            const parsedResponse = decodeURIComponent(Buffer.from(data).toString('utf-8').split('=')[1])
-            .replace(/\+/g, '').replace(/\”/g, '"');
+            let parsedResponse = `${decodeURIComponent(Buffer.from(data).toString('utf-8').split('=')[1])
+            .replace(/\+/g, '').replace(/\”/g, '"')}`;
+            const uquotedStart = /:\s[A-Za-z0-9]/;
+            const unquotedEnd = /[a-zA-Z0-9],\s/;
+            const char = /[a-zA-Z0-9]/;
+            while(uquotedStart.test(parsedResponse)) {
+                let change = parsedResponse.match(uquotedStart).toString();
+                let letter = change.match(char);
+                parsedResponse = parsedResponse.replace(change, `: "${letter}`);
+            }
+            while(unquotedEnd.test(parsedResponse)) {
+                let change = parsedResponse.match(unquotedEnd).toString();
+                let letter = change.match(char);
+                parsedResponse = parsedResponse.replace(change, `${letter}", `);
+            }
+            try {
+                JSON.parse(parsedResponse);
+            } catch(e) {
+                res.end(e.message);
+                return;
+            }
             const jsonResponse = JSON.parse(parsedResponse);
             const userLst = jsonResponse.data;
             const conds = jsonResponse.condition;
