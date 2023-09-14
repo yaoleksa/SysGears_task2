@@ -13,6 +13,24 @@ const comparator = (objArr, key) => {
     return objArr.sort(compareFn);
 };
 
+const filter = (objArr, cond) => {
+    const result = [];
+    for(let i in cond) {
+        if(i != 'sortBy') {
+            for(let j in cond[i]) {
+                for(let h in cond[i][j]) {
+                    if(i == 'exclude') {
+                        result.push(...objArr.filter(e => e[h] != cond[i][j][h]));
+                    } else if(i == 'include') {
+                        result.push(...objArr.filter(e => e[h] == cond[i][j][h]));
+                    }
+                }
+            }
+        }
+    }
+    return result;
+};
+
 http.createServer((req, res) => {
     if(req.method == 'POST') {
         req.on('data', data => {
@@ -27,7 +45,8 @@ http.createServer((req, res) => {
                     sorted = comparator(sorted, e);
                 });
             }
-            res.write(JSON.stringify(sorted), err => {
+            const filtered = filter(sorted, conds);
+            res.write(JSON.stringify(filtered), err => {
                 if(err) {
                     console.error(err.message);
                 }
