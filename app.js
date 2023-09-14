@@ -15,10 +15,31 @@ const comparator = (objArr, key) => {
 
 const filter = (objArr, cond) => {
     let result = objArr;
+    let condKeys;
+    let fullCond = '';
     for(let i in cond) {
         if(i != 'sortBy') {
             for(let j in cond[i]) {
                 // j == 0, 1... , cond[i][j] = {"disabled": true}...
+                condKeys = Object.keys(cond[i][j]);
+                condKeys.forEach(item => {
+                    if(i == 'exclude') {
+                        fullCond += `e.${item} != "${cond[i][j][item]}" && `;
+                    } else if(i == 'include') {
+                        fullCond += `e.${item} == "${cond[i][j][item]}" && `;
+                    }
+                });
+                fullCond = fullCond.replace(/\s&&\s$/, '');
+                if(condKeys.length > 1) {
+                    const toReturn = [];
+                    result.forEach(e => {
+                        console.log(`${fullCond} ${JSON.stringify(e)} ${eval(fullCond)}`);
+                        if(eval(fullCond)) {
+                            toReturn.push(e);
+                        }
+                    });
+                    return toReturn;
+                }
                 for(let h in cond[i][j]) {
                     // h == name, email ...
                     if(i == 'exclude') {
