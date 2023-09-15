@@ -33,14 +33,13 @@ const filter = (objArr, cond) => {
                 if(condKeys.length > 1) {
                     const toReturn = [];
                     result.forEach(e => {
-                        let bool = true;
+                        let bool = 0;
                         fullCond.split('&&').forEach(c => {
-                            bool = eval(c);
+                            bool += eval(c) ? 1 : 0;
                         });
-                        if(bool) {
+                        if(bool > 0) {
                             toReturn.push(e);
                         }
-                        console.log(`${fullCond} ${JSON.stringify(e)}  ${bool}`);
                     });
                     return toReturn;
                 }
